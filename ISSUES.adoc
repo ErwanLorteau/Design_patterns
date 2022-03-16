@@ -29,7 +29,8 @@ Un agent possède un calendrier de voyages et peut réserver des voyages, tandis
 * La classe https://docs.oracle.com/javase/7/docs/api/javax/crypto/Cipher.html[Cipher] disponible nativement.
 * La librairie https://commons.apache.org/proper/commons-crypto/[ Apache Commons Crypto], installable via Maven.
 * La librairie http://www.bouncycastle.org/java.html[Bouncy Castle], installable via Maven.
-. Ajouter le support pour une interface graphique, en utilisant JavaFX (La classe https://gitlab.univ-nantes.fr/naomod/software-construction-course/travel-agency/blob/master/src/main/java/fr/unantes/software/construction/ui/GUI.java[`GUI`] contient un code de démarrage avec JavaFX).
+. Ajouter le support pour une interface graphique, en utilisant JavaFX (La classe
+link:./src/main/java/fr/unantes/sce/ui/GUI.java[`GUI`] contient un code de démarrage avec JavaFX).
 *Ce ticket est résolu une fois les tickets 13 à 17 résolus.*
 
 . Ajouter un support graphique qu'un utilisateur se connecte au logiciel.
