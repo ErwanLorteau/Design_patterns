@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 public class TravelTest {
     /**Declare once for all test**/
     private Person jean ;
@@ -12,6 +15,7 @@ public class TravelTest {
     private Travel holyday;
     private City paris, nantes, grenoble, rennes ;
     private Correspondence parisNantes, grenobleRennes ;
+    private ZonedDateTime departure, arrival ;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -30,9 +34,14 @@ public class TravelTest {
         grenoble = new City("Grenoble", "France") ;
         rennes = new City("Rennes" , "France") ;
 
-        /**Correspondance**/
-        parisNantes   = new Correspondence (holyday, paris, nantes, 12, 15 ) ;
-        grenobleRennes = new Correspondence (holyday, grenoble, rennes, 10, 16) ;
+        /**ZoneDateTime**/
+        departure = ZonedDateTime.of(2022, 3, 15, 21, 30, 59,00000, ZoneId.systemDefault());
+        arrival = ZonedDateTime.of(2022, 3, 16, 02, 20, 01,200, ZoneId.systemDefault());
+
+
+        /**Correspondence**/
+        parisNantes   = new Correspondence (holyday, paris, nantes, departure, arrival ) ;
+        grenobleRennes = new Correspondence (holyday, grenoble, rennes, departure, arrival );
     }
 
     @AfterEach
@@ -42,7 +51,7 @@ public class TravelTest {
 
 
     /***Issue #1  - Vector - Test ***/
-    /**Check if given a correspondance, the addCorrespondance method will add the correpondance in steps**/
+    /**Check if given a correspondence, the addCorrespondence method will add the correpondence in steps**/
     //@ParametrizedTest
     //@ValueSource = {Correspondances =   , ,,}
     @Test
@@ -52,7 +61,7 @@ public class TravelTest {
         Assertions.assertTrue(holyday.getSteps().contains(parisNantes)) ;
     }
 
-    /**Check if given a correspondance, the removeCorrespondance method will remove the correpondance in steps**/
+    /**Check if given a correspondence, the removeCorrespondence method will remove the correpondence in steps**/
     @Test
     public void testRemoveStep() {
         holyday.addCorrespondence(parisNantes) ;
@@ -61,7 +70,7 @@ public class TravelTest {
         Assertions.assertFalse(holyday.getSteps().contains(parisNantes)) ;
     }
 
-    /**Check if adding in the correspondance list keep the order**/
+    /**Check if adding in the correspondence list keep the order**/
     @Test
     public void testGetFirstStep() {
         holyday.addCorrespondence(parisNantes) ;
@@ -69,7 +78,7 @@ public class TravelTest {
         Assertions.assertTrue(holyday.getFirstStep() == parisNantes) ;
     }
 
-    /**Check if adding in the correspondance list keep the order (last element check) **/
+    /**Check if adding in the correspondence list keep the order (last element check) **/
     @Test
     public void testGetLastStep() {
         holyday.addCorrespondence(parisNantes) ;

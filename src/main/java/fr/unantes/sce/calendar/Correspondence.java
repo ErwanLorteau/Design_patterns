@@ -1,15 +1,16 @@
 package fr.unantes.sce.calendar;
 
 import java.util.Objects;
+import java.time.* ;
 
 public class Correspondence {
     private Travel travel;
     private City startCity;
     private City destinationCity;
-    private int startTime;
-    private int arrivalTime;
+    private ZonedDateTime startTime;
+    private ZonedDateTime arrivalTime;
 
-    public Correspondence(Travel travel, City startCity, City destinationCity, int startTime, int arrivalTime) {
+    public Correspondence(Travel travel, City startCity, City destinationCity, ZonedDateTime startTime, ZonedDateTime arrivalTime) {
         this.travel = travel;
         this.startCity = startCity;
         this.destinationCity = destinationCity;
@@ -41,19 +42,19 @@ public class Correspondence {
         this.destinationCity = destinationCity;
     }
 
-    public int getStartTime() {
+    public ZonedDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
+    public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public int getArrivalTime() {
+    public ZonedDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(int arrivalTime) {
+    public void setArrivalTime(ZonedDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -64,8 +65,8 @@ public class Correspondence {
         Correspondence that = (Correspondence) o;
         return getStartCity().equals(that.getStartCity()) &&
                 getDestinationCity().equals(that.getDestinationCity()) &&
-                getStartTime() == that.getStartTime() &&
-                getArrivalTime() == that.getArrivalTime();
+                getStartTime().equals(that.getStartTime()) && //#2, we replace == by equals considering we know using an object instead of an int
+                getArrivalTime().equals(that.getArrivalTime());
     }
 
     @Override
