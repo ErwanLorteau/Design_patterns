@@ -1,17 +1,18 @@
 package fr.unantes.sce.calendar;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 /**
  * A Travel goes from one place to another, with a departure date and an arrival date
  */
 public class Travel {
-    private Vector steps;
+    private LinkedList<Correspondence> steps;
     private Calendar parent;
 
     public Travel(Calendar parent) {
         this.parent = parent;
-        steps = new Vector();
+        steps = new LinkedList<Correspondence>() ;
     }
 
     public Calendar getParent() {
@@ -37,4 +38,6 @@ public class Travel {
     public boolean removeCorrespondence(Correspondence step) {
         return steps.remove(step);
     }
+
+    public LinkedList<Correspondence> getSteps(){ return this.steps ; }
 }
