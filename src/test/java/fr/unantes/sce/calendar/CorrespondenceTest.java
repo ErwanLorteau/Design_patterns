@@ -73,6 +73,4 @@ class CorrespondenceTest {
         Correspondence sameCorrespondance = new Correspondence (holyday, paris, nantes, sameDeparture, arrival ) ;
         Assertions.assertTrue(parisNantes.equals(sameCorrespondance));
     }
-
-
 }

@@ -5,14 +5,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.InvalidClassException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class TravelTest {
     /**Declare once for all test**/
     private Person jean ;
-    private Calendar jeanAgenda ;
-    private Travel holyday;
+    private Calendar jeanCalendar;
+    private Travel jeanHoliday;
     private City paris, nantes, grenoble, rennes ;
     private Correspondence parisNantes, grenobleRennes ;
     private ZonedDateTime departure, arrival ;
@@ -23,10 +24,10 @@ public class TravelTest {
         jean = new Person("Jean", "agent");
 
         /**Calendar**/
-        jeanAgenda = new Calendar(jean) ;
+        jeanCalendar = new Calendar(jean) ;
 
         /**Travel**/
-        holyday = new Travel(jeanAgenda) ;
+        jeanHoliday = new Travel(jeanCalendar) ;
 
         /**City**/
         paris = new City("Paris", "France") ;
@@ -40,8 +41,8 @@ public class TravelTest {
 
 
         /**Correspondence**/
-        parisNantes   = new Correspondence (holyday, paris, nantes, departure, arrival ) ;
-        grenobleRennes = new Correspondence (holyday, grenoble, rennes, departure, arrival );
+        parisNantes    = new Correspondence (jeanHoliday, paris, nantes, departure, arrival ) ;
+        grenobleRennes = new Correspondence (jeanHoliday, grenoble, rennes, departure, arrival );
     }
 
     @AfterEach
@@ -57,32 +58,89 @@ public class TravelTest {
     @Test
     public void testAddStep() throws Exception {
         //setUp();
-        holyday.addCorrespondence(parisNantes) ;
-        Assertions.assertTrue(holyday.getSteps().contains(parisNantes)) ;
+        jeanHoliday.addCorrespondence(parisNantes) ;
+        Assertions.assertTrue(jeanHoliday.getSteps().contains(parisNantes)) ;
     }
 
     /**Check if given a correspondence, the removeCorrespondence method will remove the correpondence in steps**/
     @Test
     public void testRemoveStep() {
-        holyday.addCorrespondence(parisNantes) ;
-        holyday.addCorrespondence(grenobleRennes) ;
-        holyday.removeCorrespondence(parisNantes) ;
-        Assertions.assertFalse(holyday.getSteps().contains(parisNantes)) ;
+        jeanHoliday.addCorrespondence(parisNantes) ;
+        jeanHoliday.addCorrespondence(grenobleRennes) ;
+        jeanHoliday.removeCorrespondence(parisNantes) ;
+        Assertions.assertFalse(jeanHoliday.getSteps().contains(parisNantes)) ;
     }
 
     /**Check if adding in the correspondence list keep the order**/
     @Test
     public void testGetFirstStep() {
-        holyday.addCorrespondence(parisNantes) ;
-        holyday.addCorrespondence(grenobleRennes) ;
-        Assertions.assertTrue(holyday.getFirstStep() == parisNantes) ;
+        jeanHoliday.addCorrespondence(parisNantes) ;
+        jeanHoliday.addCorrespondence(grenobleRennes) ;
+        Assertions.assertTrue(jeanHoliday.getFirstStep() == parisNantes) ;
     }
 
     /**Check if adding in the correspondence list keep the order (last element check) **/
     @Test
     public void testGetLastStep() {
-        holyday.addCorrespondence(parisNantes) ;
-        holyday.addCorrespondence(grenobleRennes) ;
-        Assertions.assertTrue(holyday.getLastStep() == grenobleRennes) ;
+        jeanHoliday.addCorrespondence(parisNantes) ;
+        jeanHoliday.addCorrespondence(grenobleRennes) ;
+        Assertions.assertTrue(jeanHoliday.getLastStep() == grenobleRennes) ;
+    }
+
+
+    /***Issue #3  - Calendar <--> travel association ***/
+    @Test
+    public void testAddBasicTravel() {
+        jeanCalendar.basicAddTravel(jeanHoliday) ;
+        Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHoliday));
+    }
+
+    @Test
+    public void testRemoveBasicTravel() {
+        jeanCalendar.basicAddTravel(jeanHoliday) ;
+        jeanCalendar.basicRemoveTravel(jeanHoliday) ;
+        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
+    }
+
+    @Test
+    public void testAddTravel() {
+        jeanCalendar.addTravel(jeanHoliday) ;
+        Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHoliday));
+    }
+
+    @Test
+    public void testRemoveTravel() {
+        jeanCalendar.addTravel(jeanHoliday) ;
+        jeanCalendar.removeTravel(jeanHoliday) ;
+        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
+    }
+
+    @Test
+    public void testRemoveTravelConsistancy() {
+        jeanCalendar.addTravel(jeanHoliday) ;
+        jeanCalendar.removeTravel(jeanHoliday) ;
+        Assertions.assertTrue(jeanHoliday.getCalendar() == null );
+    }
+
+    @Test
+    public void testAddTravelConsistancy() {
+        jeanCalendar.addTravel(jeanHoliday) ;
+        Assertions.assertTrue(jeanHoliday.getCalendar() == jeanCalendar);
+    }
+
+    @Test
+    //Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
+    public void testEdgeCaseTravelConsistancy() throws InvalidClassException {
+        Person paul = new Person("Paul", "agent");
+        Calendar paulCalendar = new Calendar(paul);
+        Travel paulHolyday = new Travel(paulCalendar);
+
+        paulCalendar.addTravel(paulHolyday) ;
+        jeanCalendar.addTravel(paulHolyday) ;
+
+        Assertions.assertFalse(paulCalendar.getTravels().contains(paulHolyday));
+        Assertions.assertTrue(jeanCalendar.getTravels().contains(paulHolyday));
+        Assertions.assertTrue(paulHolyday.getCalendar() == jeanCalendar);
     }
 }
+

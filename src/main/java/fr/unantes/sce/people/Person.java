@@ -14,6 +14,7 @@ public class Person {
     public String role;
     protected Calendar calendar;
 
+
     public Person(String name, String role) throws InvalidClassException {
         if (!role.equals("agent") && !role.equals("admin")) {
             throw new InvalidClassException("Invalid role supplied. A person can only be an agent or an admin");
