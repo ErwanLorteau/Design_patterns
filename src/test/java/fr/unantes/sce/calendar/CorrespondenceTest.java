@@ -1,5 +1,6 @@
 package fr.unantes.sce.calendar;
 
+import fr.unantes.sce.people.Agent;
 import fr.unantes.sce.people.Person;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
@@ -24,8 +25,8 @@ class CorrespondenceTest {
     @BeforeEach
     void setUp() throws InvalidClassException {
         /**Person**/
-        jean = new Person("Jean", "agent");
-        paul = new Person("Paul", "agent");
+        jean = new Agent("Jean");
+        paul = new Agent("Paul");
 
         /**Calendar**/
         jeanCalendar = new Calendar(jean) ;

@@ -1,5 +1,6 @@
 package fr.unantes.sce.calendar;
 
+import fr.unantes.sce.people.Agent;
 import fr.unantes.sce.people.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +17,7 @@ public class CalendarTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        jean = new Person("Jean", "agent");
+        jean = new Agent("Jean");
         /**Calendar**/
         jeanCalendar = new Calendar(jean);
         /**Travel**/
@@ -92,7 +93,7 @@ public class CalendarTest {
     @Test
     public void testAddCalendarConsistency() throws InvalidClassException {
         //Paul calendar already contain paul holiday (in the initialization the constructor of travel do the link)
-        Calendar paulCalendar = new Calendar(new Person("paul", "agent"));
+        Calendar paulCalendar = new Calendar(new Agent("paul"));
         jeanHoliday.addCalendar(paulCalendar);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
