@@ -12,7 +12,7 @@ public class CalendarTest {
 
     private Person jean;
     private Calendar jeanCalendar;
-    private Travel jeanHolyday;
+    private Travel jeanHoliday;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -20,7 +20,7 @@ public class CalendarTest {
         /**Calendar**/
         jeanCalendar = new Calendar(jean);
         /**Travel**/
-        jeanHolyday = new Travel(jeanCalendar);
+        jeanHoliday = new Travel(jeanCalendar);
     }
 
     @AfterEach
@@ -30,70 +30,70 @@ public class CalendarTest {
     /*** Verify if IdTravel Agenda method add a travel in travels list***/
     @Test
     public void testAddTravel() {
-        jeanCalendar.addTravel(jeanHolyday);
-        Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHolyday));
+        jeanCalendar.addTravel(jeanHoliday);
+        Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
     /*** Verify if IdTravel Agenda method remove a travel in travels list***/
     @Test
     public void testRemoveTravel() {
-        jeanCalendar.addTravel(jeanHolyday);
-        jeanCalendar.removeTravel(jeanHolyday);
-        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHolyday));
+        jeanCalendar.addTravel(jeanHoliday);
+        jeanCalendar.removeTravel(jeanHoliday);
+        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
     /***Issue #3  - Calendar <--> travel association ***/
     @Test
     public void testAddBasicCalendar() {
-        jeanHolyday.basicRemoveCalendar();
-        jeanHolyday.basicAddCalendar(jeanCalendar);
-        Assertions.assertTrue(jeanHolyday.getCalendar() == jeanCalendar);
+        jeanHoliday.basicRemoveCalendar();
+        jeanHoliday.basicAddCalendar(jeanCalendar);
+        Assertions.assertTrue(jeanHoliday.getCalendar() == jeanCalendar);
     }
 
     @Test
     public void testRemoveBasicCalendar() {
         //Already contained at the begginning (the consutructor do the link)
-        jeanHolyday.basicRemoveCalendar();
-        Assertions.assertTrue(jeanHolyday.getCalendar() == null);
+        jeanHoliday.basicRemoveCalendar();
+        Assertions.assertTrue(jeanHoliday.getCalendar() == null);
     }
 
     @Test
     public void testExceptionExpectedIfListIsFull() {
         IndexOutOfBoundsException thrown = Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
             for (int i = 0; i < 11; i++) {
-                jeanCalendar.addTravel(jeanHolyday); //To change later cause we can't have the same travel twice , but for this issue it's ok
+                jeanCalendar.addTravel(jeanHoliday); //To change later cause we can't have the same travel twice , but for this issue it's ok
             }
         });
     }
 
     @Test
     public void testAddCalendar() {
-        jeanHolyday.basicRemoveCalendar(); //Constructor add the calendar in parameter
-        Assertions.assertFalse(jeanHolyday.getCalendar() == jeanCalendar);
-        jeanHolyday.addCalendar(jeanCalendar); //Constructor add the calendar in parameter
-        Assertions.assertTrue(jeanHolyday.getCalendar() == jeanCalendar);
+        jeanHoliday.basicRemoveCalendar(); //Constructor add the calendar in parameter
+        Assertions.assertFalse(jeanHoliday.getCalendar() == jeanCalendar);
+        jeanHoliday.addCalendar(jeanCalendar); //Constructor add the calendar in parameter
+        Assertions.assertTrue(jeanHoliday.getCalendar() == jeanCalendar);
     }
 
     @Test
     public void testRemoveCalendar() {
-        jeanHolyday.basicRemoveCalendar(); //Constructor add the calendar in parameter
-        Assertions.assertTrue(jeanHolyday.getCalendar() == null);
+        jeanHoliday.basicRemoveCalendar(); //Constructor add the calendar in parameter
+        Assertions.assertTrue(jeanHoliday.getCalendar() == null);
     }
 
     @Test
-    public void testRemoveCalendarConsistancy() {
-        jeanHolyday.addCalendar(jeanCalendar); //
-        //jeanCalendar.addTravel(jeanHolyday) ; //Never call twice otherwise its added two time in the list !
-        jeanHolyday.removeCalendar();
-        Assertions.assertTrue(jeanHolyday.getCalendar() == null);
-        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHolyday));
+    public void testRemoveCalendarConsistency() {
+        jeanHoliday.addCalendar(jeanCalendar); //
+        //jeanCalendar.addTravel(jeanHoliday) ; //Never call twice otherwise its added two time in the list !
+        jeanHoliday.removeCalendar();
+        Assertions.assertTrue(jeanHoliday.getCalendar() == null);
+        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
     @Test
-    public void testAddCalendarConsistancy() throws InvalidClassException {
-        jeanHolyday.addCalendar(jeanCalendar);
+    public void testAddCalendarConsistency() throws InvalidClassException {
+        jeanHoliday.addCalendar(jeanCalendar);
         Calendar paulCalendar = new Calendar(new Person("paul", "agent"));
-        jeanHolyday.addCalendar(paulCalendar);
-        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHolyday));
+        jeanHoliday.addCalendar(paulCalendar);
+        Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 }

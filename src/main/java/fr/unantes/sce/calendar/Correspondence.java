@@ -1,5 +1,6 @@
 package fr.unantes.sce.calendar;
 
+import java.io.InvalidClassException;
 import java.util.Objects;
 import java.time.* ;
 
@@ -10,8 +11,11 @@ public class Correspondence {
     private ZonedDateTime startTime;
     private ZonedDateTime arrivalTime;
 
-    public Correspondence(Travel travel, City startCity, City destinationCity, ZonedDateTime startTime, ZonedDateTime arrivalTime) {
+    public Correspondence(Travel travel, City startCity, City destinationCity, ZonedDateTime startTime, ZonedDateTime arrivalTime) throws InvalidClassException {
         this.travel = travel;
+        if(travel.getSteps().isFull()) throw new InvalidClassException("The travel can't have more than " + travel.getSteps().getMaxSize() + " correspondances");
+        travel.basicAddCorrespondence(this);
+        if(startCity == destinationCity) throw new InvalidClassException("The start and destination of a correspondance must be different");
         this.startCity = startCity;
         this.destinationCity = destinationCity;
         this.startTime = startTime;
@@ -22,8 +26,18 @@ public class Correspondence {
         return travel;
     }
 
-    public void setTravel(Travel travel) {
-        this.travel = travel;
+    public boolean setTravel(Travel t) {
+        if( t.getSteps().isFull() ) {
+            return false;
+        }
+        this.travel.basicRemoveCorrespondence((this));
+        t.basicAddCorrespondence(this) ;
+        this.basicSetTravel(t);
+        return true ;
+    }
+
+    public void basicSetTravel(Travel t) {
+        this.travel = t;
     }
 
     public City getStartCity() {

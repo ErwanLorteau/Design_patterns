@@ -1,6 +1,7 @@
 package fr.unantes.sce.calendar;
 
 import fr.unantes.sce.people.Person;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,9 @@ import java.time.ZonedDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CorrespondenceTest {
-    private Person jean ;
-    private Calendar jeanAgenda ;
-    private Travel holyday;
+    private Person jean, paul ;
+    private Calendar jeanCalendar, paulCalendar ;
+    private Travel jeanHoliday, paulHoliday;
     private City paris, nantes, grenoble, rennes ;
     private Correspondence parisNantes, grenobleRennes ;
     private ZonedDateTime departure, arrival ;
@@ -24,12 +25,15 @@ class CorrespondenceTest {
     void setUp() throws InvalidClassException {
         /**Person**/
         jean = new Person("Jean", "agent");
+        paul = new Person("Paul", "agent");
 
         /**Calendar**/
-        jeanAgenda = new Calendar(jean) ;
+        jeanCalendar = new Calendar(jean) ;
+        paulCalendar = new Calendar(paul);
 
         /**Travel**/
-        holyday = new Travel(jeanAgenda) ;
+        jeanHoliday = new Travel(jeanCalendar) ;
+        paulHoliday = new Travel(paulCalendar);
 
         /**City**/
         paris = new City("Paris", "France") ;
@@ -39,11 +43,12 @@ class CorrespondenceTest {
 
         /**ZoneDateTime**/
         departure = ZonedDateTime.of(2022, 3, 15, 21, 30, 59,00000, ZoneId.systemDefault());
-        arrival = ZonedDateTime.of(2022, 3, 16, 02, 20, 01,200, ZoneId.systemDefault()) ;
+        arrival = ZonedDateTime.of(2022, 3, 16, 02, 20, 01,200, ZoneId.systemDefault());
 
-        /**Correspondance**/
-        parisNantes   = new Correspondence (holyday, paris, nantes, departure, arrival ) ;
-        grenobleRennes = new Correspondence (holyday, grenoble, rennes, departure, arrival );
+
+        /**Correspondence**/
+        parisNantes    = new Correspondence (jeanHoliday, paris, nantes, departure, arrival ) ;
+        grenobleRennes = new Correspondence (jeanHoliday, grenoble, rennes, departure, arrival );
     }
 
     @AfterEach
@@ -67,10 +72,55 @@ class CorrespondenceTest {
 
     /**Verify the override of Equals methode (two instance of the same correspondance with two "equals" and distinct ZonedDateTimeObject will return true)**/
     @Test
-    public void testEquals() {
+    public void testEquals() throws Exception {
         /**Instanciate a deep copy of parisNantes to test the equals methode*/
         ZonedDateTime sameDeparture = ZonedDateTime.of(2022, 3, 15, 21, 30, 59,00000, ZoneId.systemDefault());
-        Correspondence sameCorrespondance = new Correspondence (holyday, paris, nantes, sameDeparture, arrival ) ;
+        Correspondence sameCorrespondance = new Correspondence (jeanHoliday, paris, nantes, sameDeparture, arrival ) ;
         Assertions.assertTrue(parisNantes.equals(sameCorrespondance));
+    }
+
+    /***Issue #4  - Travel <--> Correspondence association ***/
+
+    @Test
+    public void testStepsMaxSizeTravel() throws InvalidClassException {
+
+        Calendar cal = new Calendar(jean);
+        Travel travel = new Travel(cal);
+        City city1 = new City("City1","Somewhere");
+        City city2 = new City("City2","Somewhere");
+        Correspondence cor1 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor2 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor3 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor4 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor5 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor6 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor7 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor8 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor9 = new Correspondence(travel, city1, city2, departure, arrival);
+        Correspondence cor10 = new Correspondence(travel, city1, city2, departure, arrival);
+        try {
+            Correspondence cor11 = new Correspondence(travel, city1, city2, departure, arrival);
+        } catch (InvalidClassException e){
+            //help
+        }
+    }
+
+    @Test
+    public void testEdgeCaseCorrespondenceConsistency() {
+        grenobleRennes.setTravel(jeanHoliday);
+        parisNantes.setTravel(paulHoliday);
+        parisNantes.setTravel(jeanHoliday);
+
+        // Check that the link between grenobleRennes and jeanHoliday is created.
+        Assertions.assertTrue(grenobleRennes.getTravel() == jeanHoliday);
+        Assertions.assertTrue(jeanHoliday.getSteps().contains(grenobleRennes));
+
+        // Check that the link between parisNantes and paulHoliday is cut off.
+        Assertions.assertFalse(parisNantes.getTravel() == paulHoliday);
+        Assertions.assertFalse(paulHoliday.getSteps().contains(parisNantes));
+
+        // Check that the link between parisNantes and jeanHoliday is created.
+        Assertions.assertTrue(parisNantes.getTravel() == jeanHoliday);
+        Assertions.assertTrue(jeanHoliday.getSteps().contains(parisNantes));
     }
 }
