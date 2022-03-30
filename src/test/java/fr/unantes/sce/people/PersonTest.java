@@ -5,21 +5,88 @@ import fr.unantes.sce.calendar.City;
 import fr.unantes.sce.calendar.Correspondence;
 import fr.unantes.sce.calendar.Travel;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.InvalidClassException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
 
+    private Agent agent1, dupond, bruceWayne, batman;
+    private Admin admin1, dupont;
+    private Calendar agentCal, bruceCal;
+    private Travel agentTravel, bruceTravel;
+
     @BeforeEach
     public void setUp() throws Exception {
 
+        /**Person**/
+        agent1 = new Agent("Erwan");
+        admin1 = new Admin("Moncef");
+
+        dupond = new Agent("Dupon");
+        dupont = new Admin("Dupon");
+
+        bruceWayne = new Agent("Wayne");
+        batman = new Agent("Wayne");
+
+        /**Calendar**/
+        agentCal = new Calendar(agent1);
+
+        /**Travel**/
+        agentTravel = new Travel(agentCal);
+        bruceTravel = new Travel(bruceCal);
     }
 
     @AfterEach
     void tearDown() {
     }
 
+    /***Issue #6  - Refactor  ***/
+    @Test
+    public void testEquals() {
+        Assertions.assertFalse(dupond.equals(dupont));
+        Assertions.assertTrue(bruceWayne.equals(batman));
+    }
 
+    @Test
+    public void testAdminWithoutCalendar(){
+        try {
+            dupont.getCalendar();
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+        try {
+            dupond.getCalendar();
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testAddCalendarCoherence() throws InvalidClassException {
+        agent1.setCalendar(agentCal);
+        //OUI
+        try {
+            agent1.addTravelTo(agentTravel, agent1);
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+        bruceWayne.setCalendar(bruceCal);
+        //NON
+        try {
+            agent1.addTravelTo(bruceTravel, bruceWayne);
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+        //OUI
+        try {
+            admin1.addTravelTo(agentTravel, agent1);
+        } catch (InvalidClassException e) {
+            e.printStackTrace();
+        }
+    }
 }

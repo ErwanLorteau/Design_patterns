@@ -1,4 +1,5 @@
 package fr.unantes.sce.calendar;
+import fr.unantes.sce.people.Agent;
 import fr.unantes.sce.people.Person ;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -24,8 +25,8 @@ public class TravelTest {
     public void setUp() throws InvalidClassException {
 
         /**Person**/
-        jean = new Person("Jean", "agent");
-        paul = new Person("Paul", "agent");
+        jean = new Agent("Jean");
+        paul = new Agent("Paul");
 
         /**Calendar**/
         jeanCalendar = new Calendar(jean);
@@ -147,7 +148,7 @@ public class TravelTest {
     //Passe pas
     //Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
     public void testEdgeCaseTravelConsistency() throws InvalidClassException {
-        Person paul = new Person("Paul", "agent");
+        Person paul = new Agent("Paul");
         Calendar paulCalendar = new Calendar(paul);
         Travel paulHoliday = new Travel(paulCalendar);
 
