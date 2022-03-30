@@ -6,20 +6,28 @@ import java.time.* ;
 
 public class Correspondence {
     private Travel travel;
-    private City startCity;
-    private City destinationCity;
+    private City origin;
+    private City destination;
     private ZonedDateTime startTime;
     private ZonedDateTime arrivalTime;
 
-    public Correspondence(Travel travel, City startCity, City destinationCity, ZonedDateTime startTime, ZonedDateTime arrivalTime) throws InvalidClassException {
-        this.travel = travel;
-        if(travel.getSteps().isFull()) throw new InvalidClassException("The travel can't have more than " + travel.getSteps().getMaxSize() + " correspondances");
-        travel.basicAddCorrespondence(this);
-        if(startCity == destinationCity) throw new InvalidClassException("The start and destination of a correspondance must be different");
-        this.startCity = startCity;
-        this.destinationCity = destinationCity;
+    public Correspondence(Travel travel, City origin, City destination, ZonedDateTime startTime, ZonedDateTime arrivalTime) throws InvalidClassException, IllegalArgumentException{
+        /**Exception for null origin or destination are handled in these methods**/
+        this.setOrigin(origin);
+        this.setDestination(destination);
         this.startTime = startTime;
         this.arrivalTime = arrivalTime;
+        this.travel = travel;
+
+        if(travel.getSteps().isFull()) {
+            throw new InvalidClassException("The travel can't have more than " + travel.getSteps().getMaxSize() + " correspondances");
+        }
+
+        travel.basicAddCorrespondence(this);
+
+        if(origin == destination) {
+            throw new InvalidClassException("The start and destination of a correspondance must be different");
+        }
     }
 
     public Travel getTravel() {
@@ -40,20 +48,26 @@ public class Correspondence {
         this.travel = t;
     }
 
-    public City getStartCity() {
-        return startCity;
+    public City getOrigin() {
+        return origin;
     }
 
-    public void setStartCity(City startCity) {
-        this.startCity = startCity;
+    public City getDestination() {
+        return destination;
     }
 
-    public City getDestinationCity() {
-        return destinationCity;
+    public void setOrigin(City origin) {
+        if (origin == null ) {
+            throw new IllegalArgumentException("Origin can't be null");
+        }
+        this.origin = origin;
     }
 
-    public void setDestinationCity(City destinationCity) {
-        this.destinationCity = destinationCity;
+    public void setDestination(City destination) {
+        if (destination == null ) {
+            throw new IllegalArgumentException("Destination can't be null");
+        }
+        this.destination = destination ;
     }
 
     public ZonedDateTime getStartTime() {
@@ -77,14 +91,14 @@ public class Correspondence {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Correspondence that = (Correspondence) o;
-        return getStartCity().equals(that.getStartCity()) &&
-                getDestinationCity().equals(that.getDestinationCity()) &&
+        return getOrigin().equals(that.getOrigin()) &&
+                getDestination().equals(that.getDestination()) &&
                 getStartTime().equals(that.getStartTime()) && //#2, we replace == by equals considering we know using an object instead of an int
                 getArrivalTime().equals(that.getArrivalTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTravel(), getStartCity(), getDestinationCity(), getStartTime(), getArrivalTime());
+        return Objects.hash(getTravel(), getOrigin(), getDestination(), getStartTime(), getArrivalTime());
     }
 }
