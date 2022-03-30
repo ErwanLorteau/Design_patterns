@@ -1,8 +1,6 @@
 package fr.unantes.sce.people;
 
 import fr.unantes.sce.calendar.Calendar;
-import fr.unantes.sce.calendar.City;
-import fr.unantes.sce.calendar.Correspondence;
 import fr.unantes.sce.calendar.Travel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -10,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.InvalidClassException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
 
@@ -53,40 +49,25 @@ class PersonTest {
     }
 
     @Test
-    public void testAdminWithoutCalendar(){
-        try {
-            dupont.getCalendar();
-        } catch (InvalidClassException e) {
-            e.printStackTrace();
-        }
-        try {
-            dupond.getCalendar();
-        } catch (InvalidClassException e) {
-            e.printStackTrace();
-        }
+    public void testAdminWithoutCalendar() {
+
+        InvalidClassException AdminCantHaveCalendar = Assertions.assertThrows(
+                InvalidClassException.class,
+                () -> dupont.getCalendar(),
+                "truc"
+        );
+
+        Assertions.assertDoesNotThrow(() -> dupond.getCalendar());
     }
 
     @Test
     public void testAddCalendarCoherence() throws InvalidClassException {
         agent1.setCalendar(agentCal);
-        //OUI
-        try {
-            agent1.addTravelTo(agentTravel, agent1);
-        } catch (InvalidClassException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertTrue(agent1.addTravelTo(agentTravel,agent1));
+
         bruceWayne.setCalendar(bruceCal);
-        //NON
-        try {
-            agent1.addTravelTo(bruceTravel, bruceWayne);
-        } catch (InvalidClassException e) {
-            e.printStackTrace();
-        }
-        //OUI
-        try {
-            admin1.addTravelTo(agentTravel, agent1);
-        } catch (InvalidClassException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertFalse(agent1.addTravelTo(bruceTravel, bruceWayne));
+
+        Assertions.assertTrue(admin1.addTravelTo(agentTravel, agent1));
     }
 }
