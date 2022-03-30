@@ -36,7 +36,7 @@ public class CalendarTest {
 
     /*** Verify if IdTravel Agenda method remove a travel in travels list***/
     @Test
-    public void testRemoveTravel() {
+    public void testRemoveTravel() throws InvalidClassException {
         jeanCalendar.addTravel(jeanHoliday);
         jeanCalendar.removeTravel(jeanHoliday);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
@@ -45,15 +45,15 @@ public class CalendarTest {
     /***Issue #3  - Calendar <--> travel association ***/
     @Test
     public void testAddBasicCalendar() {
-        jeanHoliday.basicRemoveCalendar();
-        jeanHoliday.basicAddCalendar(jeanCalendar);
+        jeanHoliday.getTravelToCalendar().basicRemoveCalendar();
+        jeanHoliday.getTravelToCalendar().basicAddCalendar(jeanCalendar);
         Assertions.assertTrue(jeanHoliday.getCalendar() == jeanCalendar);
     }
 
     @Test
     public void testRemoveBasicCalendar() {
         //Already contained at the begginning (the consutructor do the link)
-        jeanHoliday.basicRemoveCalendar();
+        jeanHoliday.getTravelToCalendar().basicRemoveCalendar();
         Assertions.assertTrue(jeanHoliday.getCalendar() == null);
     }
 
@@ -68,30 +68,30 @@ public class CalendarTest {
 
     @Test
     public void testAddCalendar() {
-        jeanHoliday.basicRemoveCalendar(); //Constructor add the calendar in parameter
-        Assertions.assertFalse(jeanHoliday.getCalendar() == jeanCalendar);
+        jeanHoliday.getTravelToCalendar().basicRemoveCalendar(); //Constructor add the calendar in parameter
+        Assertions.assertFalse(jeanHoliday.getTravelToCalendar().getCalendar() == jeanCalendar);
         jeanHoliday.addCalendar(jeanCalendar); //Constructor add the calendar in parameter
         Assertions.assertTrue(jeanHoliday.getCalendar() == jeanCalendar);
     }
 
     @Test
     public void testRemoveCalendar() {
-        jeanHoliday.basicRemoveCalendar(); //Constructor add the calendar in parameter
+        jeanHoliday.getTravelToCalendar().basicRemoveCalendar(); //Constructor add the calendar in parameter
         Assertions.assertTrue(jeanHoliday.getCalendar() == null);
     }
 
     @Test
     public void testRemoveCalendarConsistency() {
         jeanHoliday.addCalendar(jeanCalendar); //
-        //jeanCalendar.addTravel(jeanHoliday) ; //Never call twice otherwise its added two time in the list !
         jeanHoliday.removeCalendar();
         Assertions.assertTrue(jeanHoliday.getCalendar() == null);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
+    //passe pas
     @Test
     public void testAddCalendarConsistency() throws InvalidClassException {
-        jeanHoliday.addCalendar(jeanCalendar);
+        //Paul calendar already contain paul holiday (in the initialization the constructor of travel do the link)
         Calendar paulCalendar = new Calendar(new Person("paul", "agent"));
         jeanHoliday.addCalendar(paulCalendar);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));

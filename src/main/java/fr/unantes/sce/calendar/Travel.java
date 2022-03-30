@@ -5,38 +5,31 @@ package fr.unantes.sce.calendar;
  */
 public class Travel {
     private MultiValuedAttribute<Correspondence> steps;
-    private Calendar calendar;
+    private TravelToCalendar travelToCalendar;
 
     public Travel(Calendar c) {
-        this.calendar = c;
+        this.travelToCalendar = new TravelToCalendar(this, c);
         steps = new MultiValuedAttribute<Correspondence>(10) ;
     }
 
     public void addCalendar(Calendar c) {
-        if (calendar != null) {
-            calendar.basicRemoveTravel(this) ; //Consistancy
-        }
-        c.basicAddTravel(this) ;
-        this.basicAddCalendar(c);
+        travelToCalendar.addCalendar(c) ;
+
     }
 
-    public void removeCalendar() {
-        this.calendar.basicRemoveTravel(this) ;  //Consistancy
-        this.basicRemoveCalendar();
+    public boolean removeCalendar() {
+        return travelToCalendar.removeCalendar();
     }
-
     //Can't garantee that we have a calendar even with [1] cardinality in the case we want to remove a calendar
-    public void basicRemoveCalendar() {
-        this.calendar = null ;
-    }
 
-    public void basicAddCalendar(Calendar c) {
-        this.calendar = c;
-    }
 
      /**Getters & Setter**/
     public Calendar getCalendar() {
-        return calendar;
+        return travelToCalendar.getCalendar();
+    }
+
+    public TravelToCalendar getTravelToCalendar() {
+        return travelToCalendar;
     }
 
     public Correspondence getFirstStep() {

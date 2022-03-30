@@ -106,14 +106,14 @@ public class TravelTest {
     /***Issue #3  - Calendar <--> travel association ***/
     @Test
     public void testAddBasicTravel() {
-        jeanCalendar.basicAddTravel(jeanHoliday);
+        jeanCalendar.getTravels().basicAddTravel(jeanHoliday);
         Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
     @Test
     public void testRemoveBasicTravel() {
-        jeanCalendar.basicAddTravel(jeanHoliday);
-        jeanCalendar.basicRemoveTravel(jeanHoliday);
+        jeanCalendar.getTravels().basicAddTravel(jeanHoliday);
+        jeanCalendar.getTravels().basicRemoveTravel(jeanHoliday);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
@@ -124,14 +124,14 @@ public class TravelTest {
     }
 
     @Test
-    public void testRemoveTravel() {
+    public void testRemoveTravel() throws InvalidClassException {
         jeanCalendar.addTravel(jeanHoliday);
-        jeanCalendar.removeTravel(jeanHoliday);
+        jeanCalendar.getTravels().removeTravel(jeanHoliday);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
     @Test
-    public void testRemoveTravelConsistency() {
+    public void testRemoveTravelConsistency() throws InvalidClassException {
         jeanCalendar.addTravel(jeanHoliday);
         jeanCalendar.removeTravel(jeanHoliday);
         Assertions.assertTrue(jeanHoliday.getCalendar() == null);
@@ -144,18 +144,19 @@ public class TravelTest {
     }
 
     @Test
+    //Passe pas
     //Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
     public void testEdgeCaseTravelConsistency() throws InvalidClassException {
         Person paul = new Person("Paul", "agent");
         Calendar paulCalendar = new Calendar(paul);
         Travel paulHoliday = new Travel(paulCalendar);
 
-        paulCalendar.addTravel(paulHoliday);
         jeanCalendar.addTravel(paulHoliday);
 
-        Assertions.assertFalse(paulCalendar.getTravels().contains(paulHoliday));
-        Assertions.assertTrue(jeanCalendar.getTravels().contains(paulHoliday));
+        Assertions.assertFalse(paulHoliday.getCalendar() == paulCalendar);
         Assertions.assertTrue(paulHoliday.getCalendar() == jeanCalendar);
+        Assertions.assertTrue(jeanCalendar.getTravels().contains(paulHoliday));
+        Assertions.assertFalse(paulCalendar.getTravels().contains(paulHoliday));
     }
 
     /***Issue #4  - Travel <--> Correspondence association ***/
