@@ -70,5 +70,4 @@ public class Travel {
     public boolean basicAddCorrespondence(Correspondence step) { return steps.add(step) ; }
 
     public boolean basicRemoveCorrespondence(Correspondence step) { return steps.remove(step) ; }
-
 }
