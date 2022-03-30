@@ -23,6 +23,8 @@ public class MultiValuedAttribute <T> {
         return list.remove(elem);
     }
 
+    public T get(int i) { return this.list.get(i); }
+
     public int getMaxSize() {
         return maxSize;
     }
@@ -34,6 +36,8 @@ public class MultiValuedAttribute <T> {
     public int size(){
         return list.size();
     }
+
+    public boolean isFull() {return this.list.size() == maxSize ; }
 
     public boolean contains(T elem) {
         return list.contains(elem) ;

@@ -1,17 +1,15 @@
 package fr.unantes.sce.calendar;
 
-import java.util.LinkedList;
-
 /**
  * A Travel goes from one place to another, with a departure date and an arrival date
  */
 public class Travel {
-    private LinkedList<Correspondence> steps;
+    private MultiValuedAttribute<Correspondence> steps;
     private Calendar calendar;
 
     public Travel(Calendar c) {
         this.calendar = c;
-        steps = new LinkedList<Correspondence>() ;
+        steps = new MultiValuedAttribute<Correspondence>(10) ;
     }
 
     public void addCalendar(Calendar c) {
@@ -50,12 +48,26 @@ public class Travel {
     }
 
     public boolean addCorrespondence(Correspondence step) {
-        return steps.add(step);
+
+        if(steps.contains(step)){
+            return true;
+        }
+
+        if (!steps.isFull()) {
+            step.getTravel().basicRemoveCorrespondence(step); //handling consistency
+            step.basicSetTravel(this);
+            return basicAddCorrespondence(step); // adding
+        }
+        return false ;
     }
 
     public boolean removeCorrespondence(Correspondence step) {
         return steps.remove(step);
     }
 
-    public LinkedList<Correspondence> getSteps(){ return this.steps ; }
+    public MultiValuedAttribute<Correspondence> getSteps(){ return this.steps ; }
+
+    public boolean basicAddCorrespondence(Correspondence step) { return steps.add(step) ; }
+
+    public boolean basicRemoveCorrespondence(Correspondence step) { return steps.remove(step) ; }
 }
