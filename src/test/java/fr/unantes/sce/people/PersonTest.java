@@ -54,7 +54,7 @@ class PersonTest {
         InvalidClassException AdminCantHaveCalendar = Assertions.assertThrows(
                 InvalidClassException.class,
                 () -> dupont.getCalendar(),
-                "truc"
+                ""
         );
 
         Assertions.assertDoesNotThrow(() -> dupond.getCalendar());
