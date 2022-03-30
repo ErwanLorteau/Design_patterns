@@ -101,11 +101,12 @@ class CorrespondenceTest {
         Correspondence cor8 = new Correspondence(travel, city1, city2, departureTime, arrivalTime);
         Correspondence cor9 = new Correspondence(travel, city1, city2, departureTime, arrivalTime);
         Correspondence cor10 = new Correspondence(travel, city1, city2, departureTime, arrivalTime);
-        try {
-            Correspondence cor11 = new Correspondence(travel, city1, city2, departureTime, arrivalTime);
-        } catch (InvalidClassException e) {
-            //help
-        }
+
+        InvalidClassException travelCantHave11Correspondences = Assertions.assertThrows(
+                InvalidClassException.class,
+                () -> new Correspondence(travel, city1, city2, departureTime, arrivalTime),
+                ""
+        );
     }
 
     @Test
