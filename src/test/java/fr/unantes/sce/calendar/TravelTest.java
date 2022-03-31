@@ -146,8 +146,11 @@ public class TravelTest {
     }
 
     @Test
-    //Passe pas
-    //Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
+
+    /**
+     * Test handshaking  - when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
+     */
+
     public void testEdgeCaseTravelConsistency() throws InvalidClassException {
         Agent paul = new Agent("Paul");
         Calendar paulCalendar = new Calendar(paul);
@@ -169,6 +172,10 @@ public class TravelTest {
         Assertions.assertTrue(parisNantes.getTravel() == jeanHoliday);
         Assertions.assertTrue(jeanHoliday.getSteps().contains(parisNantes));
     }
+
+    /**
+     * Test handshaking  - when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
+     */
 
     @Test
     public void testEdgeCaseCorrespondenceConsistency() throws InvalidClassException {

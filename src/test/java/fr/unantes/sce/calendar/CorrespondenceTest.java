@@ -56,9 +56,6 @@ class CorrespondenceTest {
 
     /**#Issue 2 - Replace ints by a Date Type **/
 
-    /**
-     * Verify the getters/setters
-     **/
     @Test
     public void testStartTime() {
         parisNantes.setStartTime(departureTime);
@@ -84,6 +81,10 @@ class CorrespondenceTest {
 
     /***Issue #4  - Travel <--> Correspondence association ***/
 
+    /**
+     * Test that a Travel have a maximum of 10 correspondence
+     * @throw InvalidClassException if we try to overcome the capatity
+     */
     @Test
     public void testStepsMaxSizeTravel() throws InvalidClassException {
 
@@ -108,6 +109,10 @@ class CorrespondenceTest {
                 ""
         );
     }
+
+    /**
+     * Test corresponence handshaking (Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked)
+     */
 
     @Test
     public void testEdgeCaseCorrespondenceConsistency() {

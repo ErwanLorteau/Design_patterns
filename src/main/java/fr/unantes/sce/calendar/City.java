@@ -30,6 +30,10 @@ public class City {
         this.name = name;
     }
 
+    /**
+     * Test if two cities are equals (same name, same country)
+     */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
