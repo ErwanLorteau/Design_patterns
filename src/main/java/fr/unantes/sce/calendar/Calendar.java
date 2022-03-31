@@ -1,5 +1,5 @@
 package fr.unantes.sce.calendar;
-
+import fr.unantes.sce.people.Agent;
 import fr.unantes.sce.people.Person;
 
 import java.io.InvalidClassException;
@@ -11,9 +11,10 @@ public class Calendar {
     private CalendarToTravel travels ;
     private Person owner;
 
-    public Calendar(Person owner) {
+    public Calendar(Agent owner){
         this.owner = owner;
         travels = new CalendarToTravel(this) ;
+        owner.setCalendar(this);
     }
 
     public boolean addTravel(Travel t) {
@@ -28,13 +29,14 @@ public class Calendar {
         return owner;
     }
 
-    public void setOwner(Person owner) {
+    // Do not use outside exchangeCalendarWith
+    // Classes Agent and Calendar in different packages --> can't set as package-private
+    public void setOwner(Person owner){
         this.owner = owner;
     }
 
     public CalendarToTravel getTravels() {
         return travels ;
     }
-
 
 }

@@ -14,7 +14,7 @@ public class TravelTest {
     /**
      * Declare once for all test
      **/
-    private Person jean, paul;
+    private Agent jean, paul;
     private Calendar jeanCalendar, paulCalendar;
     private Travel jeanHoliday, paulHoliday;
     private City paris, nantes, grenoble, rennes;
@@ -148,7 +148,7 @@ public class TravelTest {
     //Passe pas
     //Test when A is linked To B and we link A to C than B is no longer linked to A, and that C and A are linked
     public void testEdgeCaseTravelConsistency() throws InvalidClassException {
-        Person paul = new Agent("Paul");
+        Agent paul = new Agent("Paul");
         Calendar paulCalendar = new Calendar(paul);
         Travel paulHoliday = new Travel(paulCalendar);
 

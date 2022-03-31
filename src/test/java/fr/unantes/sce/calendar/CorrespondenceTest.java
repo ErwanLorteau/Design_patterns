@@ -12,7 +12,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 class CorrespondenceTest {
-    private Person jean, paul;
+    private Agent jean, paul;
     private Calendar jeanCalendar, paulCalendar;
     private Travel jeanHoliday, paulHoliday;
     private City paris, nantes, grenoble, rennes;

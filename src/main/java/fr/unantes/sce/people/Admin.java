@@ -1,13 +1,10 @@
 package fr.unantes.sce.people;
 
-import fr.unantes.sce.calendar.Calendar;
 import fr.unantes.sce.calendar.Travel;
-
-import java.io.InvalidClassException;
 
 public class Admin extends Person{
 
-    public Admin(String name) throws InvalidClassException {
+    public Admin(String name) {
         super(name);
     }
 
@@ -22,27 +19,12 @@ public class Admin extends Person{
     }
 
     @Override
-    public Calendar getCalendar() throws InvalidClassException {
-        throw new InvalidClassException("Admin can't have a calendar");
-    }
-
-    @Override
-    public void setCalendar(Calendar calendar) throws InvalidClassException {
-        throw new InvalidClassException("Admin can't have a calendar");
-    }
-
-    @Override
-    public boolean addTravelTo(Travel travel, Person agent) throws InvalidClassException {
+    public boolean addTravelTo(Travel travel, Agent agent) {
         return agent.getCalendar().addTravel(travel);
     }
 
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }

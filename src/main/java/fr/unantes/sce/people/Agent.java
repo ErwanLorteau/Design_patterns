@@ -3,13 +3,11 @@ package fr.unantes.sce.people;
 import fr.unantes.sce.calendar.Calendar;
 import fr.unantes.sce.calendar.Travel;
 
-import java.io.InvalidClassException;
-
 public class Agent extends Person{
 
     private Calendar calendar;
 
-    public Agent(String name) throws InvalidClassException {
+    public Agent(String name) {
         super(name);
     }
 
@@ -23,18 +21,26 @@ public class Agent extends Person{
         super.setName(name);
     }
 
-    @Override
-    public Calendar getCalendar() throws InvalidClassException {
+    public Calendar getCalendar() {
         return calendar;
     }
 
-    @Override
-    public void setCalendar(Calendar calendar) throws InvalidClassException {
+    // Do not use outside Calendar constructor and exchangeCalendarWith
+    // Classes Agent and Calendar in different packages --> can't set as package-private
+    public void setCalendar(Calendar calendar) {
         this.calendar = calendar;
     }
 
+    public void exchangeCalendarWith(Agent other){
+        Calendar stock = this.calendar;
+        other.getCalendar().setOwner(this);
+        this.setCalendar(other.getCalendar());
+        other.setCalendar(stock);
+        other.getCalendar().setOwner(other);
+    }
+
     @Override
-    public boolean addTravelTo(Travel travel, Person agent) throws InvalidClassException {
+    public boolean addTravelTo(Travel travel, Agent agent) {
         if (agent != this){
             return false;
         }
@@ -46,8 +52,4 @@ public class Agent extends Person{
         return super.equals(o);
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }
