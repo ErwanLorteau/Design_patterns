@@ -63,4 +63,36 @@ public class Travel {
     public boolean basicAddCorrespondence(Correspondence step) { return steps.add(step) ; }
 
     public boolean basicRemoveCorrespondence(Correspondence step) { return steps.remove(step) ; }
+
+    public boolean hasChainPattern(){
+
+        Correspondence actual, next;
+        for(int i = 0; i < steps.size()-1; i++){
+            actual = steps.get(i);
+            next = steps.get(i+1);
+            if(actual.getDestination() != next.getOrigin()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isChronologicallyCorrect(){
+
+        Correspondence actual, next;
+        for(int i = 0; i < steps.size()-1; i++){
+            actual = steps.get(i);
+            next = steps.get(i+1);
+            if(actual.getStartTime().isAfter(actual.getArrivalTime()) || actual.getArrivalTime().isAfter(next.getStartTime())){
+                System.out.println(actual.getOrigin().name);
+                System.out.println(actual.getDestination().name);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isCoherent(){
+        return hasChainPattern() && isChronologicallyCorrect();
+    }
 }

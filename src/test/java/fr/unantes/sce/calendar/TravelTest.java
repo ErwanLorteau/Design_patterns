@@ -1,4 +1,5 @@
 package fr.unantes.sce.calendar;
+import fr.unantes.sce.people.Admin;
 import fr.unantes.sce.people.Agent;
 import fr.unantes.sce.people.Person ;
 import org.junit.jupiter.api.AfterEach;
@@ -187,6 +188,51 @@ public class TravelTest {
         // Check that the link between jeanHoliday and parisNantes is cut off.
         Assertions.assertFalse(jeanHoliday.getSteps().contains(parisNantes));
         Assertions.assertFalse(parisNantes.getTravel() == jeanHoliday);
+    }
+
+    /***Issue #10  - Travel Coherence ***/
+
+    @Test
+    public void testTravelCoherence() throws InvalidClassException {
+        Agent kaito = new Agent("Kaito");
+        City tokyo = new City("Tokyo", "Japan");
+        City kyoto = new City("Kyoto", "Japan");
+        City kobe = new City("Kobe", "Japan");
+        City osaka = new City("Osaka", "Japan");
+        City sapporo = new City("Sapporo", "Japan");
+        Calendar cal = new Calendar(kaito);
+
+        // The case of a Travel with only one Correspondence
+        Travel t1 = new Travel(cal);
+        ZonedDateTime may1at12pm = ZonedDateTime.of(2022, 5, 1, 12, 00, 00, 00000, ZoneId.systemDefault());
+        ZonedDateTime may1at16pm = ZonedDateTime.of(2022, 5, 1, 16, 00, 00, 00000, ZoneId.systemDefault());
+        Correspondence tokyoKyoto = new Correspondence(t1, tokyo, kyoto, may1at12pm, may1at16pm);
+        Assertions.assertTrue(t1.isCoherent());
+
+        // The case of a Travel who's not a chain
+        Travel t2 = new Travel(cal);
+        ZonedDateTime may6at8am = ZonedDateTime.of(2022, 5, 6, 8, 00, 00, 00000, ZoneId.systemDefault());
+        ZonedDateTime may7at2am = ZonedDateTime.of(2022, 5, 7, 2, 00, 00, 00000, ZoneId.systemDefault());
+        Correspondence osakaSapporo = new Correspondence(t2, osaka, sapporo, may6at8am, may7at2am);
+        t2.addCorrespondence(tokyoKyoto);
+        Assertions.assertFalse(t2.hasChainPattern());
+
+        // The case of a next Correspondence with startTime before the actual arrivalTime
+        Travel t3 = new Travel(cal);
+        t3.addCorrespondence(tokyoKyoto);
+        ZonedDateTime april28at8am = ZonedDateTime.of(2022, 4, 28, 8, 00, 00, 00000, ZoneId.systemDefault());
+        ZonedDateTime april28at10am = ZonedDateTime.of(2022, 4, 28, 10, 00, 00, 00000, ZoneId.systemDefault());
+        Correspondence kyotoKobe = new Correspondence(t3, kyoto,  kobe, april28at8am, april28at10am);
+        Assertions.assertFalse(t3.isChronologicallyCorrect());
+
+        // The case of a Travel with a chain pattern and the good chronological order
+        Travel t4 = new Travel(cal);
+        t4.addCorrespondence(tokyoKyoto);
+        ZonedDateTime may4at12pm = ZonedDateTime.of(2022, 5, 4, 12, 00, 00, 00000, ZoneId.systemDefault());
+        ZonedDateTime may4at13pm = ZonedDateTime.of(2022, 5, 4, 13, 00, 00, 00000, ZoneId.systemDefault());
+        Correspondence kyotoOsaka = new Correspondence(t4, kyoto, osaka, may4at12pm, may4at13pm);
+        t4.addCorrespondence(osakaSapporo);
+        Assertions.assertTrue(t4.isCoherent());
     }
 
 }
