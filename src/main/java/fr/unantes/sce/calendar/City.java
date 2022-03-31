@@ -9,9 +9,9 @@ public class City {
     public String country;
     public String name;
 
-    public City(String country, String name) {
-        this.country = country;
+    public City(String name, String country) {
         this.name = name;
+        this.country = country;
     }
 
     public String getCountry() {

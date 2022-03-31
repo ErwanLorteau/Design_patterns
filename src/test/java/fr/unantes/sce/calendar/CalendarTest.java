@@ -11,7 +11,7 @@ import java.io.InvalidClassException;
 
 public class CalendarTest {
 
-    private Person jean;
+    private Agent jean;
     private Calendar jeanCalendar;
     private Travel jeanHoliday;
 

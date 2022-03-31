@@ -12,7 +12,7 @@ import java.util.Objects;
 public abstract class Person {
     public String name;
 
-    public Person(String name) throws InvalidClassException {
+    public Person(String name) {
         this.name = name;
     }
 
@@ -24,9 +24,7 @@ public abstract class Person {
         this.name = name;
     }
 
-    public abstract Calendar getCalendar() throws InvalidClassException;
-    public abstract void setCalendar(Calendar calendar) throws InvalidClassException;
-    public abstract boolean addTravelTo(Travel travel, Person agent) throws InvalidClassException ;
+    public abstract boolean addTravelTo(Travel travel, Agent agent) ;
 
 
     @Override
@@ -35,14 +33,5 @@ public abstract class Person {
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
         return getName().equals(person.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        try {
-            return Objects.hash(getName(), getCalendar());
-        } catch (InvalidClassException e) {
-            return Objects.hash(getName());
-        }
     }
 }

@@ -31,6 +31,7 @@ class PersonTest {
 
         /**Calendar**/
         agentCal = new Calendar(agent1);
+        bruceCal = new Calendar(bruceWayne);
 
         /**Travel**/
         agentTravel = new Travel(agentCal);
@@ -43,31 +44,30 @@ class PersonTest {
 
     /***Issue #6  - Refactor  ***/
     @Test
-    public void testEquals() {
+    public void testEqualsCoherence() {
         Assertions.assertFalse(dupond.equals(dupont));
         Assertions.assertTrue(bruceWayne.equals(batman));
     }
 
     @Test
-    public void testAdminWithoutCalendar() {
-
-        InvalidClassException AdminCantHaveCalendar = Assertions.assertThrows(
-                InvalidClassException.class,
-                () -> dupont.getCalendar(),
-                ""
-        );
-
-        Assertions.assertDoesNotThrow(() -> dupond.getCalendar());
-    }
-
-    @Test
     public void testAddCalendarCoherence() throws InvalidClassException {
-        agent1.setCalendar(agentCal);
+
         Assertions.assertTrue(agent1.addTravelTo(agentTravel,agent1));
 
-        bruceWayne.setCalendar(bruceCal);
         Assertions.assertFalse(agent1.addTravelTo(bruceTravel, bruceWayne));
 
         Assertions.assertTrue(admin1.addTravelTo(agentTravel, agent1));
+    }
+
+    /***Issue #9  - Verify constraints on "Calendar" <--> "Agent" association  ***/
+
+    @Test
+    public void testExchangeCalendarWith(){
+        agent1.exchangeCalendarWith(bruceWayne);
+
+        Assertions.assertTrue(agent1.getCalendar() == bruceCal);
+        Assertions.assertTrue(bruceWayne.getCalendar()  == agentCal);
+        Assertions.assertTrue(bruceCal.getOwner() == agent1);
+        Assertions.assertTrue(agentCal.getOwner() == bruceWayne);
     }
 }
