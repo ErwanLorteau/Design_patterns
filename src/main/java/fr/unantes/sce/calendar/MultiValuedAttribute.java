@@ -2,14 +2,27 @@ package fr.unantes.sce.calendar;
 
 import java.util.LinkedList;
 
+/**
+ * A Class to handle sized list in the whole project
+ */
+
 public class MultiValuedAttribute <T> {
    private LinkedList<T> list ;
    private int maxSize ;
+
+    /**
+     * Instanciate a MultivaluedAttribute wich store a list of a maximum size
+     * @param maxSize The maximum size
+     */
 
     public MultiValuedAttribute(int maxSize){
         list = new LinkedList<T>() ;
         this.maxSize = maxSize  ;
     }
+
+    /**
+     * Add an element to the list if the list isn't full
+     */
 
     public boolean add(T elem) {
         if (list.size() < maxSize) {

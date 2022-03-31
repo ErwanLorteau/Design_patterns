@@ -7,15 +7,26 @@ public class Travel {
     private MultiValuedAttribute<Correspondence> steps;
     private TravelToCalendar travelToCalendar;
 
+    /**
+     * Instanciate a Travel and link it to i'ts calendar
+     */
+
     public Travel(Calendar c) {
         this.travelToCalendar = new TravelToCalendar(this, c);
         steps = new MultiValuedAttribute<Correspondence>(10) ;
     }
+    /**
+     * Add a calendar to a travel, handle handshaking
+     */
 
     public void addCalendar(Calendar c) {
         travelToCalendar.addCalendar(c) ;
 
     }
+
+    /**
+     * Remove a calendar of a travel, handle handshaking
+     */
 
     public boolean removeCalendar() {
         return travelToCalendar.removeCalendar();
@@ -39,6 +50,11 @@ public class Travel {
     public Correspondence getLastStep() {
         return (Correspondence) steps.get(steps.size() - 1);
     }
+
+
+    /**
+     * Adding a Correspondence to a travel
+     */
 
     public boolean addCorrespondence(Correspondence step) {
 
@@ -64,6 +80,7 @@ public class Travel {
 
     public boolean basicRemoveCorrespondence(Correspondence step) { return steps.remove(step) ; }
 
+
     public boolean hasChainPattern(){
 
         Correspondence actual, next;
@@ -77,6 +94,9 @@ public class Travel {
         return true;
     }
 
+    /**
+     * Check if the list of Correspondence are cohenrent in term of departure time and arrivalTime
+     */
     public boolean isChronologicallyCorrect(){
 
         Correspondence actual, next;
