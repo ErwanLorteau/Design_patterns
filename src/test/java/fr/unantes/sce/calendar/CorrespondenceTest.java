@@ -135,17 +135,17 @@ class CorrespondenceTest {
                 () -> new Correspondence(paulHoliday, null, rennes, departureTime, arrivalTime),
                 ""
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Origin can't be null"));
+        Assertions.assertTrue(thrown.getMessage().contains("Null city"));
     }
 
     @Test
     public void cantSetNullOrigin() {
         IllegalArgumentException thrown = Assertions.assertThrows(
                 IllegalArgumentException.class,
-                () -> new Correspondence(paulHoliday, null, rennes, departureTime, arrivalTime),
+                () -> parisNantes.setOrigin(null) ,
                 ""
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Origin can't be null"));
+        Assertions.assertTrue(thrown.getMessage().contains("Origin can't be set as null"));
     }
 
     @Test
@@ -155,7 +155,7 @@ class CorrespondenceTest {
                 () -> new Correspondence(paulHoliday, rennes, null, departureTime, arrivalTime),
                 ""
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Destination can't be null"));
+        Assertions.assertTrue(thrown.getMessage().contains("Null city"));
     }
 
     @Test
@@ -165,6 +165,36 @@ class CorrespondenceTest {
                 () -> parisNantes.setDestination(null),
                 ""
         );
-        Assertions.assertTrue(thrown.getMessage().contains("Destination can't be null"));
+        Assertions.assertTrue(thrown.getMessage().contains("Destination can't be set as null"));
+    }
+
+    @Test
+    public void expectStartTimeIsBeforeArrivalTimeInConstructor() {
+        IllegalArgumentException thrown = Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> new Correspondence( paulHoliday, rennes, paris, arrivalTime, departureTime) ,
+                ""
+        );
+        Assertions.assertTrue(thrown.getMessage().contains("Cant 'initialize a correspondance with arrivalTime anterior at startTime"));
+    }
+
+    @Test
+    public void cantSetAnArrivalTimeAnteriorToDepartureTime() {
+        IllegalArgumentException thrown = Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> parisNantes.setArrivalTime(parisNantes.getStartTime().minusDays(1)) ,  //
+                ""
+        );
+        Assertions.assertTrue(thrown.getMessage().contains("arrivalTime can't be set, must be after startTime"));
+    }
+
+    @Test
+    public void cantSetAStartTimeSuperiorToArrivalTime() {
+        IllegalArgumentException thrown = Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> parisNantes.setStartTime(parisNantes.getArrivalTime().plusDays(1)) ,  //
+                ""
+        );
+        Assertions.assertTrue(thrown.getMessage().contains("startTime can't be set, it must be anterior to arrivalTime"));
     }
 }
