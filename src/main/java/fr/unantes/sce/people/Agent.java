@@ -3,10 +3,6 @@ package fr.unantes.sce.people;
 import fr.unantes.sce.calendar.Calendar;
 import fr.unantes.sce.calendar.Travel;
 
-/**
- * An agent is a Person wich own a calendar and allowed to book travels to himself
- */
-
 public class Agent extends Person{
 
     private Calendar calendar;
@@ -35,9 +31,6 @@ public class Agent extends Person{
         this.calendar = calendar;
     }
 
-    /**
-     * Exchange a calendar between two agent (this and other)
-     */
     public void exchangeCalendarWith(Agent other){
         Calendar stock = this.calendar;
         other.getCalendar().setOwner(this);

@@ -15,14 +15,12 @@ public class CalendarTest {
     private Calendar jeanCalendar;
     private Travel jeanHoliday;
 
-    /**
-     * Initialize basics object for the tests
-     */
-
     @BeforeEach
     public void setUp() throws Exception {
         jean = new Agent("Jean");
+        /**Calendar**/
         jeanCalendar = new Calendar(jean);
+        /**Travel**/
         jeanHoliday = new Travel(jeanCalendar);
     }
 
@@ -30,14 +28,14 @@ public class CalendarTest {
     public void tearDown() throws Exception {
     }
 
-
+    /*** Verify if IdTravel Agenda method add a travel in travels list***/
     @Test
     public void testAddTravel() {
         jeanCalendar.addTravel(jeanHoliday);
         Assertions.assertTrue(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
-
+    /*** Verify if IdTravel Agenda method remove a travel in travels list***/
     @Test
     public void testRemoveTravel() throws InvalidClassException {
         jeanCalendar.addTravel(jeanHoliday);
@@ -60,10 +58,6 @@ public class CalendarTest {
         Assertions.assertTrue(jeanHoliday.getCalendar() == null);
     }
 
-    /**
-     * Test wheither or not we have an exception if we try to add a travel into a full calendar
-     * @throw IndexOutOfBoundsException if calendar is full
-     */
     @Test
     public void testExceptionExpectedIfListIsFull() {
         IndexOutOfBoundsException thrown = Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -95,9 +89,10 @@ public class CalendarTest {
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));
     }
 
-
+    //passe pas
     @Test
     public void testAddCalendarConsistency() throws InvalidClassException {
+        //Paul calendar already contain paul holiday (in the initialization the constructor of travel do the link)
         Calendar paulCalendar = new Calendar(new Agent("paul"));
         jeanHoliday.addCalendar(paulCalendar);
         Assertions.assertFalse(jeanCalendar.getTravels().contains(jeanHoliday));

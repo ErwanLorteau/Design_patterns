@@ -5,15 +5,11 @@ import fr.unantes.sce.people.Person;
 import java.io.InvalidClassException;
 
 /**
- * A Calendar, wich stores a list of travels for an agent
+ * A Calendar stores a list of travels for an agent
  */
 public class Calendar {
     private CalendarToTravel travels ;
     private Person owner;
-
-    /**
-     * Instantiate a new Calendar
-     */
 
     public Calendar(Agent owner){
         this.owner = owner;

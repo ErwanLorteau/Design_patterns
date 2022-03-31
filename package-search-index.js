@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"fr.unantes.sce"},{"l":"fr.unantes.sce.calendar"},{"l":"fr.unantes.sce.people"},{"l":"fr.unantes.sce.security"},{"l":"fr.unantes.sce.ui"}]
