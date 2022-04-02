@@ -24,6 +24,9 @@ public abstract class Person {
         this.name = name;
     }
 
+    /**
+     * Add the travel in the agent calendar
+     */
     public abstract boolean addTravelTo(Travel travel, Agent agent) ;
 
 

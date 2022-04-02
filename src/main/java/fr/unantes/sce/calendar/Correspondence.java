@@ -65,6 +65,10 @@ public class Correspondence {
         }
     }
 
+    /**
+     * Set the travel, replacing the actual one if exist
+     * handle handshaking with travel
+     */
     public boolean setTravel(Travel t) {
         if( t.getSteps().isFull() ) {
             return false;
@@ -99,7 +103,7 @@ public class Correspondence {
 
     /**
      * Set a non-null destination city
-     * @throw IllegalArgumentException if i'ts null
+     * @throw IllegalArgumentException if it's null
      */
 
     public void setDestination(City destination) {

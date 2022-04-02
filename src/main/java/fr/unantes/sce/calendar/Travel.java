@@ -8,7 +8,7 @@ public class Travel {
     private TravelToCalendar travelToCalendar;
 
     /**
-     * Instanciate a Travel and link it to i'ts calendar
+     * Instantiate a Travel and link it to his calendar
      */
 
     public Travel(Calendar c) {
@@ -81,6 +81,10 @@ public class Travel {
     public boolean basicRemoveCorrespondence(Correspondence step) { return steps.remove(step) ; }
 
 
+    /**
+     * Check if the steps order is coherent
+     * The destination of a city must be the origin of the next one
+     */
     public boolean hasChainPattern(){
 
         Correspondence actual, next;
@@ -95,7 +99,7 @@ public class Travel {
     }
 
     /**
-     * Check if the list of Correspondence are cohenrent in term of departure time and arrivalTime
+     * Check if the list of Correspondence is coherent in term of departure time and arrivalTime
      */
     public boolean isChronologicallyCorrect(){
 
@@ -104,14 +108,15 @@ public class Travel {
             actual = steps.get(i);
             next = steps.get(i+1);
             if(actual.getStartTime().isAfter(actual.getArrivalTime()) || actual.getArrivalTime().isAfter(next.getStartTime())){
-                System.out.println(actual.getOrigin().name);
-                System.out.println(actual.getDestination().name);
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * Check if the list of Correspondence is coherent
+     */
     public boolean isCoherent(){
         return hasChainPattern() && isChronologicallyCorrect();
     }
